@@ -4,14 +4,14 @@ export default function createReportObject(employeesList) {
       allEmployees: employeesList,
   
       getNumberOfDepartments(allEmployees) {
-        let i = 0;
+        let count = 0;
   
         // eslint-disable-next-line guard-for-in, no-unused-vars
-        for (const dep in allEmployees) {
-          i += 1;
+        for (const department in allEmployees) {
+          count += 1;
         }
   
-        return i;
+        return count;
       },
     };
   }
