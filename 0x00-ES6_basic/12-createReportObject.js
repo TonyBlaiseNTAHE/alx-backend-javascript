@@ -6,9 +6,10 @@ export default function createReportObject(employeesList) {
     getNumberOfDepartments(allEmployees) {
       let count = 0;
 
-      // eslint-disable-next-line no-unused-vars
       for (const department in allEmployees) {
-        count += 1;
+        if (allEmployees.hasOwnProperty(department)) {
+          count += 1;
+        }
       }
 
       return count;
