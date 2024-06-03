@@ -1,11 +1,13 @@
-import {uploadPhoto, createUser} from './utils.js';
-
+import { uploadPhoto, createUser } from './utils';
 
 export default function handleProfileSignup() {
-     Promise.all([uploadPhoto(), createUser()])
-     .then(([photoRes, createUserRes]) => {
-        console.log(`${photoRes.body} ${createUserRes.firstName} ${createUserRes.lastName}`);
-     }).catch(error => {
-        console.log('Signup system offline');
-     });
+  return Promise.all([uploadPhoto(), createUser()])
+    .then(([photo, user]) => {
+      // eslint-disable-next-line no-unused-vars
+      const { status, body } = photo;
+      const { firstName, lastName } = user;
+      console.log(`${body} ${firstName} ${lastName}`);
+    })
+    // eslint-disable-next-line no-unused-vars
+    .catch((error) => { console.log('Signup system offline'); });
 }
