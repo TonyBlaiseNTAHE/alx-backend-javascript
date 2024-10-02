@@ -1,7 +1,7 @@
 export default function appendToEachArrayValue(array, appendString) {
   const newArray = [];
-  for (var element of array) {
-    var value = appendString + element;
+  for (const element of array) {
+    const value = appendString + element;
     newArray.push(value);
   }
   return newArray;
