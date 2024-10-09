@@ -1,8 +1,8 @@
 export default function getResponseFromAPI() {
-  // eslint-disable-next-line no-unused-vars
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      const uploadPhoto = { status: 200, body: 'photo-profile-1' };
-      resolve(uploadPhoto);
-    }, 2000);
+      //console.log("succeded");
+      resolve("succeded");
+    }, 200);
   });
+}
