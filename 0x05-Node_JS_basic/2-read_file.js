@@ -1,37 +1,38 @@
-const fs = require("fs");
+const fs = require('fs');
 
-const countStudents = (path) => {
+function countStudents(fileName) {
+  const students = {};
+  const fields = {};
+  let length = 0;
   try {
-    const csvData = fs.readFileSync(path, "utf8");
-    const rows = csvData.split("\n");
-    const cols = rows.map((row) => row.split(","));
-    const data = cols.slice(1, -1);
-
-    const numberOfStudents = data.length;
-    const csStudentsName = [];
-    const sweStudentsName = [];
-
-    for (const row of data) {
-      if (row[3] === "CS") {
-        csStudentsName.push(row[0]);
-      } else if (row[3] === "SWE") {
-        sweStudentsName.push(row[0]);
+    const content = fs.readFileSync(fileName, 'utf-8');
+    const lines = content.toString().split('\n');
+    for (let i = 0; i < lines.length; i += 1) {
+      if (lines[i]) {
+        length += 1;
+        const field = lines[i].toString().split(',');
+        if (Object.prototype.hasOwnProperty.call(students, field[3])) {
+          students[field[3]].push(field[0]);
+        } else {
+          students[field[3]] = [field[0]];
+        }
+        if (Object.prototype.hasOwnProperty.call(fields, field[3])) {
+          fields[field[3]] += 1;
+        } else {
+          fields[field[3]] = 1;
+        }
       }
     }
-    console.log(`Number of students: ${numberOfStudents}`);
-    console.log(
-      `Number of students in CS: ${
-        csStudentsName.length
-      }. List: ${csStudentsName.join(", ")}`
-    );
-    console.log(
-      `Number of students in SWE: ${
-        sweStudentsName.length
-      }. List: ${sweStudentsName.join(", ")}`
-    );
-  } catch (err) {
-    throw new Error("Cannot load the database");
+    const l = length - 1;
+    console.log(`Number of students: ${l}`);
+    for (const [key, value] of Object.entries(fields)) {
+      if (key !== 'field') {
+        console.log(`Number of students in ${key}: ${value}. List: ${students[key].join(', ')}`);
+      }
+    }
+  } catch (error) {
+    throw Error('Cannot load the database');
   }
-};
+}
 
 module.exports = countStudents;

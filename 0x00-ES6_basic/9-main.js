@@ -1,4 +1,5 @@
-import getFullBudgetObject from "./9-getFullBudget.js";
+/* eslint-disable import/extensions */
+import getFullBudgetObject from './9-getFullBudget.js';
 
 const fullBudget = getFullBudgetObject(20, 50, 10);
 

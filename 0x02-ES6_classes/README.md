@@ -1,1 +1,1 @@
-ES6_classes
+# Solutions to ES6 classes

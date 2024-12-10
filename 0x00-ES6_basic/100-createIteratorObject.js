@@ -1,8 +1,8 @@
 export default function createIteratorObject(report) {
-  const employees = [];
-  // eslint-disable-next-line guard-for-in
-  for (const department in report.allEmployees) {
-    employees.push(...report.allEmployees[department]);
+  const myarray = [];
+  for (const item of Object.values(report.allEmployees)) {
+    myarray.push(...item);
   }
-  return employees;
+
+  return myarray;
 }

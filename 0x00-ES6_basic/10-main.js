@@ -1,5 +1,4 @@
-import appendToEachArrayValue from "./10-loops.js";
+/* eslint-disable import/extensions */
+import appendToEachArrayValue from './10-loops.js';
 
-console.log(
-  appendToEachArrayValue(["appended", "fixed", "displayed"], "correctly-")
-);
+console.log(appendToEachArrayValue(['appended', 'fixed', 'displayed'], 'correctly-'));
