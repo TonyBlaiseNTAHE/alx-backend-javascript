@@ -1,63 +1,58 @@
 const express = require('express');
-
-const { readFile } = require('fs');
+const fs = require('fs').promises;
 
 const app = express();
-const port = 1245;
 
-function countStudents(fileName) {
-  const students = {};
-  const fields = {};
-  let length = 0;
+function countStudents(path) {
   return new Promise((resolve, reject) => {
-    readFile(fileName, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        let output = '';
-        const lines = data.toString().split('\n');
-        for (let i = 0; i < lines.length; i += 1) {
-          if (lines[i]) {
-            length += 1;
-            const field = lines[i].toString().split(',');
-            if (Object.prototype.hasOwnProperty.call(students, field[3])) {
-              students[field[3]].push(field[0]);
-            } else {
-              students[field[3]] = [field[0]];
+    fs.readFile(path, 'utf8')
+      .then((data) => {
+        const lines = data.split('\n');
+        const hashtable = {};
+        let students = -1;
+        let result = '';
+        for (const line of lines) {
+          if (line.trim() !== '') {
+            const columns = line.split(',');
+            const field = columns[3];
+            const firstname = columns[0];
+            if (students >= 0) {
+              if (!Object.hasOwnProperty.call(hashtable, field)) {
+                hashtable[field] = [];
+              }
+              hashtable[field] = [...hashtable[field], firstname];
             }
-            if (Object.prototype.hasOwnProperty.call(fields, field[3])) {
-              fields[field[3]] += 1;
-            } else {
-              fields[field[3]] = 1;
-            }
+            students += 1;
           }
         }
-        const l = length - 1;
-        output += `Number of students: ${l}\n`;
-        for (const [key, value] of Object.entries(fields)) {
-          if (key !== 'field') {
-            output += `Number of students in ${key}: ${value}. `;
-            output += `List: ${students[key].join(', ')}\n`;
+        result += `Number of students: ${students}\n`;
+        for (const key in hashtable) {
+          if (Object.hasOwnProperty.call(hashtable, key)) {
+            result += `Number of students in ${key}: ${hashtable[key].length}. List: ${hashtable[key].join(', ')}\n`;
           }
         }
-        resolve(output);
-      }
-    });
+        resolve(result);
+      })
+      .catch(() => {
+        reject(new Error('Cannot load the database'));
+      });
   });
 }
 
 app.get('/', (req, res) => {
   res.send('Hello Holberton School!');
 });
+
 app.get('/students', (req, res) => {
-  countStudents(process.argv[2].toString()).then((output) => {
-    res.send(['This is the list of our students', output].join('\n'));
-  }).catch(() => {
-    res.send('This is the list of our students\nCannot load the database');
-  });
+  countStudents(process.argv[2])
+    .then((data) => {
+      res.send(`This is the list of our students\n${data}`);
+    })
+    .catch((error) => {
+      res.status(500).send(`This is the list of our students\n${error.message}`);
+    });
 });
 
-app.listen(port, () => {
-});
+app.listen(1245);
 
 module.exports = app;
