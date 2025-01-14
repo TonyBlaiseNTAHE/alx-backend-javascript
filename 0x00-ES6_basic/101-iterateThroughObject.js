@@ -1,14 +1,7 @@
-/* eslint-disable radix */
 export default function iterateThroughObject(reportWithIterator) {
-  let output = '';
-
-  for (const [index, item] of Object.entries(reportWithIterator)) {
-    output += `${item}`;
-
-    if (parseInt(index) !== reportWithIterator.length - 1) {
-      output += ' | ';
-    }
+  const returnString = [];
+  for (const report of reportWithIterator) {
+    returnString.push(report);
   }
-
-  return output;
+  return returnString.join(' | ');
 }
